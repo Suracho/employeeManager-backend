@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.*;
 import tech.suracho.employeeportal.model.Employee;
 import tech.suracho.employeeportal.service.EmployeeService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
+@Transactional
 @RequestMapping("/employee")
 public class EmployeeResource {
     private final EmployeeService employeeService;
@@ -30,12 +32,13 @@ public class EmployeeResource {
         Employee newEmployee = employeeService.addEmployee(employee);
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
     }
-    @PutMapping("/add/{id}")
+    @PutMapping("/update")
     public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee){
         Employee updateEmployee = employeeService.updateEmployee(employee);
         return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
     }
-    @PostMapping("/delete/{id}")
+
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id){
         employeeService.deleteEmployee(id);
         return new ResponseEntity<>(HttpStatus.OK);
